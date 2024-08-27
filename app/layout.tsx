@@ -3,6 +3,7 @@ import { ChildProps } from '@/types'
 import type { Metadata } from 'next'
 import { Crete_Round, Work_Sans } from 'next/font/google'
 import './globals.css'
+import { Toaster } from 'sonner'
 
 const creteRound = Crete_Round({
 	weight: ['400'],
@@ -34,6 +35,7 @@ function RootLayout({ children }: ChildProps) {
 					disableTransitionOnChange
 				>
 					{children}
+					<Toaster position='top-center' />
 				</ThemeProvider>
 			</body>
 		</html>
