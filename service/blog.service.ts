@@ -11,6 +11,7 @@ export const getBlogs = async (): Promise<IBlog[]> =>{
           title
           createdAt
           author {
+            id
             name
             image {
               url
@@ -48,6 +49,7 @@ export const getDetailedBlog = async (slug:string) => {
         where: {slug: $slug }
       ) {
         author {
+          id
           name
           bio
           image {
