@@ -81,3 +81,49 @@ export const getDetailedBlog = async (slug:string) => {
 
   return blog
 }
+
+export const getSearchBlogs = async (title: string) => {
+	const query = gql`
+		query MyQuery($title: String!) {
+			blogs(where: { title_contains: $title }) {
+				title
+				image {
+					url
+				}
+				slug
+				createdAt
+			}
+		}
+	`
+	const { blogs } = await request<{ blogs: IBlog[] }>(graphqlAPI, query, {
+		title,
+	})
+	return blogs
+}
+
+// export const getArchiveBlogs = async () => {
+// 	const query = gql`
+// 		query MyQuery {
+// 			blogs(where: { archive: true }) {
+// 				title
+// 				createdAt
+// 				slug
+// 			}
+// 		}
+// 	`
+
+// 	const { blogs } = await request<{ blogs: IBlog[] }>(graphqlAPI, query)
+// 	const filteredBlogs = blogs.reduce(
+// 		(acc: { [year: string]: IArchivedBlog }, blog: IBlog) => {
+// 			const year = blog.createdAt.substring(0, 4)
+// 			if (!acc[year]) {
+// 				acc[year] = { year, blogs: [] }
+// 			}
+// 			acc[year].blogs.push(blog)
+// 			return acc
+// 		},
+// 		{}
+// 	)
+// 	const results: IArchivedBlog[] = Object.values(filteredBlogs)
+// 	return results
+// }
