@@ -1,11 +1,16 @@
 import CategoriesTagsCard from '@/components/cards/categories-tags'
 import { getAllTags } from '@/service/tag.service'
 import { Dot, Home } from 'lucide-react'
+import { Metadata } from 'next'
 import Link from 'next/link'
 
+export const metadata: Metadata = {
+	title: 'All tags',
+}
+
+
 async function Page() {
-	const tags = await getAllTags();
-		
+	const tags = await getAllTags();		
     return (
 		<div className='max-w-6xl mx-auto'>
 			<div className='relative min-h-[40vh] flex items-center justify-end flex-col'>

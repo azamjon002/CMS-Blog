@@ -10,17 +10,20 @@ import {
 } from '@/components/ui/drawer'
 import { Input } from '@/components/ui/input'
 import { Separator } from '@/components/ui/separator'
-import { popularCategories, popularTags } from '@/constants'
 import { getSearchBlogs } from '@/service/blog.service'
-import { IBlog } from '@/types'
+import { getAllCategory } from '@/service/category.service'
+import { getAllTags } from '@/service/tag.service'
+import { IBlog, ICategoryAndTags } from '@/types'
 import { debounce } from 'lodash'
 import { Loader2, Minus, Search } from 'lucide-react'
 import Link from 'next/link'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 function GlobalSearch() {
 	const [isLoading, setIsLoading] = useState(false)
 	const [blogs, setBlogs] = useState<IBlog[]>([])
+	const [popularCategories, setPopularCategories] = useState<ICategoryAndTags[]>([])
+	const [popularTags, setPopularTags] = useState<ICategoryAndTags[]>([])
 
 	const handleSearch = async (e: ChangeEvent<HTMLInputElement>) => {
 		const text = e.target.value.toLowerCase()
@@ -37,6 +40,22 @@ function GlobalSearch() {
 	}
 
 	const debounceSearch = debounce(handleSearch, 500)
+
+	useEffect(() => {
+		const fetchCategories = async () => {
+			try {
+			  const categories = await getAllCategory();
+			  setPopularCategories(categories);
+			  
+			  const tags = await getAllTags()
+			  setPopularTags(tags);
+			} catch (error) {
+			  setIsLoading(true)
+			}
+		  };
+	  
+		  fetchCategories(); 
+	},[])
 
 	return (
 		<Drawer>
